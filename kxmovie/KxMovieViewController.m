@@ -183,8 +183,10 @@ static NSMutableDictionary * gHistory;
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
     
             NSError *error = nil;
-            [decoder openFile:path error:&error];
-                        
+            //[decoder openFile:path error:&error];
+            [decoder playURLString:path
+                             error:&error];
+            
             __strong KxMovieViewController *strongSelf = weakSelf;
             if (strongSelf) {
                 
@@ -376,8 +378,9 @@ _messageLabel.hidden = YES;
         } else {
             
             // force ffmpeg to free allocated memory
-            [_decoder closeFile];
-            [_decoder openFile:nil error:nil];
+            /*[_decoder closeFile];
+            [_decoder openFile:nil error:nil];*/
+            [_decoder stop];
             
             [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failure", nil)
                                         message:NSLocalizedString(@"Out of memory", nil)
@@ -389,8 +392,9 @@ _messageLabel.hidden = YES;
     } else {
         
         [self freeBufferedFrames];
-        [_decoder closeFile];
-        [_decoder openFile:nil error:nil];
+        /*[_decoder closeFile];
+        [_decoder openFile:nil error:nil];*/
+        [_decoder stop];
     }
 }
 
@@ -612,7 +616,7 @@ _messageLabel.hidden = YES;
 
 - (void) progressDidChange: (id) sender
 {
-    NSAssert(_decoder.duration != MAXFLOAT, @"bugcheck");
+    //NSAssert(_decoder.duration != MAXFLOAT, @"bugcheck");
     UISlider *slider = sender;
     [self setMoviePosition:slider.value * _decoder.duration];
 }
@@ -1296,7 +1300,7 @@ _messageLabel.hidden = YES;
         return;
     
     const CGFloat duration = _decoder.duration;
-    const CGFloat position = _moviePosition -_decoder.startTime;
+    const CGFloat position = _moviePosition;// - _decoder.startTime;
     
     if (_progressSlider.state == UIControlStateNormal)
         _progressSlider.value = position / duration;

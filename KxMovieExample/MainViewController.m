@@ -29,7 +29,9 @@
         self.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFeatured tag: 0];
         
         _remoteMovies = @[
-
+            @"http://bf.vbfcdn.net/videos/Mir_urskogo_perioda_2015_hdtv_[BOBFILM.NET].flv",
+            @"http://bf.vbfcdn.net/videos/Mir_urskogo_perioda_2015_treiler__[BOBFILM.NET].flv",
+            @"http://bf.vbfcdn.net/videos/pridorojnoe_zavedenie_1993_treiler[BOBFILM.NET].mp4",
 //            @"http://eric.cast.ro/stream2.flv",
 //            @"http://liveipad.wasu.cn/cctv2_ipad/z.m3u8",
             @"http://www.wowza.com/_h264/BigBuckBunny_175k.mov",

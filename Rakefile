@@ -10,7 +10,7 @@ end
 
 ## build ffmpeg
 
-SDK_VERSION='7.1'
+SDK_VERSION=''
 
 XCODE_PATH='/Applications/Xcode.app/Contents/Developer/Platforms'
 GCC_PATH='/Applications/XCode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang'
@@ -30,6 +30,12 @@ FFMPEG_BUILD_ARGS_SIM = [
 "--extra-ldflags='-arch i386 -miphoneos-version-min=6.0'",
 "--extra-cflags='-arch i386 -miphoneos-version-min=6.0'",
 '--disable-asm',
+'--disable-everything',
+'--enable-parser=h264',
+'--enable-decoder=aac',
+'--enable-demuxer=flv',
+'--enable-demuxer=mov',
+'--enable-protocol=http',
 ]
 
 FFMPEG_BUILD_ARGS_ARMV7 = [
@@ -47,6 +53,12 @@ FFMPEG_BUILD_ARGS_ARMV7 = [
 '--disable-armv6',
 '--disable-armv6t2',
 '--enable-small',
+'--disable-everything',
+'--enable-parser=h264',
+'--enable-decoder=aac',
+'--enable-demuxer=flv',
+'--enable-demuxer=mov',
+'--enable-protocol=http',
 ]
 
 FFMPEG_BUILD_ARGS_ARMV7S = [
@@ -64,6 +76,12 @@ FFMPEG_BUILD_ARGS_ARMV7S = [
 '--disable-armv6',
 '--disable-armv6t2',
 '--enable-small',
+'--disable-everything',
+'--enable-parser=h264',
+'--enable-decoder=aac',
+'--enable-demuxer=flv',
+'--enable-demuxer=mov',
+'--enable-protocol=http',
 ]
 
 FFMPEG_BUILD_ARGS_ARM64 = [
@@ -81,6 +99,12 @@ FFMPEG_BUILD_ARGS_ARM64 = [
 '--disable-armv6',
 '--disable-armv6t2',
 '--enable-small',
+'--disable-everything',
+'--enable-parser=h264',
+'--enable-decoder=aac',
+'--enable-demuxer=flv',
+'--enable-demuxer=mov',
+'--enable-protocol=http',
 ]
 
 FFMPEG_BUILD_ARGS = [
@@ -95,6 +119,12 @@ FFMPEG_BUILD_ARGS = [
 #'--enable-nonfree',
 # '--enable-gpl',
 '--enable-version3',
+'--disable-everything',
+'--enable-parser=h264',
+'--enable-decoder=aac',
+'--enable-demuxer=flv',
+'--enable-demuxer=mov',
+'--enable-protocol=http',
 ]
 
 FFMPEG_LIBS = [

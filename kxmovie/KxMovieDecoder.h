@@ -107,14 +107,20 @@ typedef BOOL(^KxMovieDecoderInterruptCallback)();
 @property (readonly, nonatomic) CGFloat startTime;
 @property (readwrite, nonatomic) BOOL disableDeinterlacing;
 @property (readwrite, nonatomic, strong) KxMovieDecoderInterruptCallback interruptCallback;
+@property (readonly, nonatomic) BOOL seekable;
 
 + (id) movieDecoderWithContentPath: (NSString *) path
                              error: (NSError **) perror;
 
-- (BOOL) openFile: (NSString *) path
+/*- (BOOL) openFile: (NSString *) path
             error: (NSError **) perror;
 
--(void) closeFile;
+-(void) closeFile;*/
+
+- (BOOL) playURLString:(NSString *)URLString
+                 error: (NSError **) perror;
+
+- (void) stop;
 
 - (BOOL) setupVideoFrameFormat: (KxVideoFrameFormat) format;
 
