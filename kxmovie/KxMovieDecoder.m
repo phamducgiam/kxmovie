@@ -897,13 +897,18 @@ static int interrupt_callback(void *ctx);
         if (!codec)
             return kxMovieErrorCodecNotFound;
         
+        _videoCodecCtx = avcodec_alloc_context3(codec);
+        if (avcodec_copy_context(_videoCodecCtx, codecCtx) < 0) {
+            return kxMovieErrorOpenCodec;
+        }
+        
         // inform the codec that we can handle truncated bitstreams -- i.e.,
         // bitstreams where frame boundaries can fall in the middle of packets
         //if(codec->capabilities & CODEC_CAP_TRUNCATED)
         //    _codecCtx->flags |= CODEC_FLAG_TRUNCATED;
         
         // open codec
-        if (avcodec_open2(codecCtx, codec, NULL) < 0)
+        if (avcodec_open2(_videoCodecCtx, codec, NULL) < 0)
             return kxMovieErrorOpenCodec;
     }
     
@@ -917,7 +922,7 @@ static int interrupt_callback(void *ctx);
             return kxMovieErrorAllocateFrame;
         }
         
-        _videoCodecCtx = codecCtx;
+        //_videoCodecCtx = codecCtx;
         
         // determine fps
         
@@ -961,19 +966,24 @@ static int interrupt_callback(void *ctx);
         if (!codec)
             return kxMovieErrorCodecNotFound;
         
-        if (avcodec_open2(codecCtx, codec, NULL) < 0)
+        _audioCodecCtx = avcodec_alloc_context3(codec);
+        if (avcodec_copy_context(_audioCodecCtx, codecCtx) < 0) {
+            return kxMovieErrorOpenCodec;
+        }
+        
+        if (avcodec_open2(_audioCodecCtx, codec, NULL) < 0)
             return kxMovieErrorOpenCodec;
         
-        if (!audioCodecIsSupported(codecCtx)) {
+        if (!audioCodecIsSupported(_audioCodecCtx)) {
             
             id<KxAudioManager> audioManager = [KxAudioManager audioManager];
             swrContext = swr_alloc_set_opts(NULL,
                                             av_get_default_channel_layout(audioManager.numOutputChannels),
                                             AV_SAMPLE_FMT_S16,
                                             audioManager.samplingRate,
-                                            av_get_default_channel_layout(codecCtx->channels),
-                                            codecCtx->sample_fmt,
-                                            codecCtx->sample_rate,
+                                            av_get_default_channel_layout(_audioCodecCtx->channels),
+                                            _audioCodecCtx->sample_fmt,
+                                            _audioCodecCtx->sample_rate,
                                             0,
                                             NULL);
             
@@ -982,7 +992,7 @@ static int interrupt_callback(void *ctx);
                 
                 if (swrContext)
                     swr_free(&swrContext);
-                avcodec_close(codecCtx);
+                avcodec_close(_audioCodecCtx);
                 
                 return kxMovieErroReSampler;
             }
@@ -997,11 +1007,11 @@ static int interrupt_callback(void *ctx);
         if (!_audioFrame) {
             if (swrContext)
                 swr_free(&swrContext);
-            avcodec_close(codecCtx);
+            avcodec_close(_audioCodecCtx);
             return kxMovieErrorAllocateFrame;
         }
         
-        _audioCodecCtx = codecCtx;
+        //_audioCodecCtx = codecCtx;
         _swrContext = swrContext;
         
         AVStream *st = _formatCtx->streams[_audioStream];

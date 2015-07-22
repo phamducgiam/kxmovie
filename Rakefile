@@ -23,6 +23,7 @@ SDK_PATH_IOS="/Developer/SDKs/iPhoneOS#{SDK_VERSION}.sdk"
 
 
 FFMPEG_BUILD_ARGS_SIM = [
+'--prefix=build',	
 '--assert-level=2',
 '--disable-mmx',
 '--arch=i386',
@@ -39,6 +40,7 @@ FFMPEG_BUILD_ARGS_SIM = [
 ]
 
 FFMPEG_BUILD_ARGS_ARMV7 = [
+'--prefix=build',
 '--arch=arm',
 '--cpu=cortex-a8',
 '--enable-pic',
@@ -62,6 +64,7 @@ FFMPEG_BUILD_ARGS_ARMV7 = [
 ]
 
 FFMPEG_BUILD_ARGS_ARMV7S = [
+'--prefix=build',
 '--arch=arm',
 '--cpu=cortex-a9',
 '--enable-pic',
@@ -85,6 +88,7 @@ FFMPEG_BUILD_ARGS_ARMV7S = [
 ]
 
 FFMPEG_BUILD_ARGS_ARM64 = [
+'--prefix=build',
 '--arch=arm64',
 # '--cpu=cortex-a9',
 '--enable-pic',
@@ -108,6 +112,7 @@ FFMPEG_BUILD_ARGS_ARM64 = [
 ]
 
 FFMPEG_BUILD_ARGS = [
+'--prefix=build',
 '--disable-ffmpeg',
 '--disable-ffplay',
 '--disable-ffserver',

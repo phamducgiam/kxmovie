@@ -108,8 +108,8 @@ static NSMutableDictionary * gHistory;
     UIButton            *_doneButton;
     UILabel             *_progressLabel;
     UILabel             *_leftLabel;
-    UIButton            *_infoButton;
-    UITableView         *_tableView;
+    //UIButton            *_infoButton;
+    //UITableView         *_tableView;
     UIActivityIndicatorView *_activityIndicatorView;
     UILabel             *_subtitlesLabel;
     
@@ -270,7 +270,7 @@ _messageLabel.hidden = YES;
     _doneButton.backgroundColor = [UIColor clearColor];
 //    _doneButton.backgroundColor = [UIColor redColor];
     [_doneButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_doneButton setTitle:NSLocalizedString(@"OK", nil) forState:UIControlStateNormal];
+    [_doneButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
     _doneButton.titleLabel.font = [UIFont systemFontOfSize:18];
     _doneButton.showsTouchWhenHighlighted = YES;
     [_doneButton addTarget:self action:@selector(doneDidTouch:)
@@ -303,17 +303,17 @@ _messageLabel.hidden = YES;
     _leftLabel.font = [UIFont systemFontOfSize:12];
     _leftLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     
-    _infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
+    /*_infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
     _infoButton.frame = CGRectMake(width-31, (topH-20)/2+1, 20, 20);
     _infoButton.showsTouchWhenHighlighted = YES;
     _infoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    [_infoButton addTarget:self action:@selector(infoDidTouch:) forControlEvents:UIControlEventTouchUpInside];
+    [_infoButton addTarget:self action:@selector(infoDidTouch:) forControlEvents:UIControlEventTouchUpInside];*/
     
     [_topHUD addSubview:_doneButton];
     [_topHUD addSubview:_progressLabel];
     [_topHUD addSubview:_progressSlider];
     [_topHUD addSubview:_leftLabel];
-    [_topHUD addSubview:_infoButton];
+    //[_topHUD addSubview:_infoButton];
 
     // bottom hud
 
@@ -355,7 +355,7 @@ _messageLabel.hidden = YES;
         _progressLabel.hidden = YES;
         _progressSlider.hidden = YES;
         _leftLabel.hidden = YES;
-        _infoButton.hidden = YES;
+        //_infoButton.hidden = YES;
     }
 }
 
@@ -683,7 +683,7 @@ _messageLabel.hidden = YES;
             _progressLabel.hidden   = NO;
             _progressSlider.hidden  = NO;
             _leftLabel.hidden       = NO;
-            _infoButton.hidden      = NO;
+            //_infoButton.hidden      = NO;
             
             if (_activityIndicatorView.isAnimating) {
                 
@@ -1462,7 +1462,7 @@ _messageLabel.hidden = YES;
 
 - (void) showInfoView: (BOOL) showInfo animated: (BOOL)animated
 {
-    if (!_tableView)
+    /*if (!_tableView)
         [self createTableView];
 
     [self pause];
@@ -1514,12 +1514,12 @@ _messageLabel.hidden = YES;
         }
     }
     
-    _infoMode = showInfo;    
+    _infoMode = showInfo;*/
 }
 
 - (void) createTableView
 {    
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    /*_tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -1530,7 +1530,7 @@ _messageLabel.hidden = YES;
     CGFloat Y = _topHUD.bounds.size.height;
     _tableView.frame = CGRectMake(0,size.height,size.width,size.height - Y);
     
-    [self.view addSubview:_tableView];   
+    [self.view addSubview:_tableView];*/
 }
 
 - (void) handleDecoderMovieError: (NSError *) error
@@ -1615,11 +1615,12 @@ _messageLabel.hidden = YES;
 - (id) mkCell: (NSString *) cellIdentifier
     withStyle: (UITableViewCellStyle) style
 {
-    UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    /*UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:style reuseIdentifier:cellIdentifier];
     }
-    return cell;
+    return cell;*/
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1695,7 +1696,7 @@ _messageLabel.hidden = YES;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == KxMovieInfoSectionAudio) {
+    /*if (indexPath.section == KxMovieInfoSectionAudio) {
         
         NSInteger selected = _decoder.selectedAudioStream;
         
@@ -1745,7 +1746,7 @@ _messageLabel.hidden = YES;
                 [_subtitles removeAllObjects];
             }
         }
-    }
+    }*/
 }
 
 @end
