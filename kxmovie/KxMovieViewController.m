@@ -34,12 +34,14 @@ static NSString * formatTimeInterval(CGFloat seconds, BOOL isLeft)
     s = s % 60;
     m = m % 60;
 
-    NSMutableString *format = [(isLeft && seconds >= 0.5 ? @"-" : @"") mutableCopy];
+    /*NSMutableString *format = [(isLeft && seconds >= 0.5 ? @"-" : @"") mutableCopy];
     if (h != 0) [format appendFormat:@"%d:%0.2d", h, m];
     else        [format appendFormat:@"%d", m];
     [format appendFormat:@":%0.2d", s];
 
-    return format;
+    return format;*/
+    NSString *format = (isLeft && seconds >= 0.5 ? @"-%02d:%02d:%02d" : @"%02d:%02d:%02d");
+    return [NSString stringWithFormat:format, h, m, s];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -92,28 +94,28 @@ static NSMutableDictionary * gHistory;
     BOOL                _interrupted;
 
     KxMovieGLView       *_glView;
-    UIImageView         *_imageView;
-    UIView              *_topHUD;
-    UIToolbar           *_topBar;
-    UIToolbar           *_bottomBar;
-    UISlider            *_progressSlider;
+    IBOutlet UIImageView         *_imageView;
+    IBOutlet UIView              *_topHUD;
+    IBOutlet UIToolbar           *_topBar;
+    IBOutlet UIToolbar           *_bottomBar;
+    IBOutlet UISlider            *_progressSlider;
 
-    UIBarButtonItem     *_playBtn;
-    UIBarButtonItem     *_pauseBtn;
-    UIBarButtonItem     *_rewindBtn;
-    UIBarButtonItem     *_fforwardBtn;
-    UIBarButtonItem     *_spaceItem;
-    UIBarButtonItem     *_fixedSpaceItem;
+    IBOutlet UIBarButtonItem     *_playBtn;
+    IBOutlet UIBarButtonItem     *_pauseBtn;
+    IBOutlet UIBarButtonItem     *_rewindBtn;
+    IBOutlet UIBarButtonItem     *_fforwardBtn;
+    IBOutlet UIBarButtonItem     *_spaceItem;
+    IBOutlet UIBarButtonItem     *_fixedSpaceItem;
 
-    UIButton            *_doneButton;
-    UILabel             *_progressLabel;
-    UILabel             *_leftLabel;
+    IBOutlet UIButton            *_doneButton;
+    IBOutlet UILabel             *_progressLabel;
+    IBOutlet UILabel             *_leftLabel;
     //UIButton            *_infoButton;
     //UITableView         *_tableView;
-    UIActivityIndicatorView *_activityIndicatorView;
+    IBOutlet UIActivityIndicatorView *_activityIndicatorView;
     UILabel             *_subtitlesLabel;
     
-    UITapGestureRecognizer *_tapGestureRecognizer;
+    IBOutlet UITapGestureRecognizer *_tapGestureRecognizer;
     UITapGestureRecognizer *_doubleTapGestureRecognizer;
     UIPanGestureRecognizer *_panGestureRecognizer;
         
@@ -162,7 +164,7 @@ static NSMutableDictionary * gHistory;
 {
     NSAssert(path.length > 0, @"empty path");
     
-    self = [super initWithNibName:nil bundle:nil];
+    self = [super initWithNibName:@"KxMovieViewController" bundle:nil];
     if (self) {
         
         _moviePosition = 0;
@@ -192,7 +194,7 @@ static NSMutableDictionary * gHistory;
                 
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     
-                    [strongSelf setMovieDecoder:decoder withError:error];                    
+                    [strongSelf setMovieDecoder:decoder withError:error];
                 });
             }
         });
@@ -215,7 +217,7 @@ static NSMutableDictionary * gHistory;
     LoggerStream(1, @"%@ dealloc", self);
 }
 
-- (void)loadView
+/*- (void)loadView
 {
     // LoggerStream(1, @"loadView");
     CGRect bounds = [[UIScreen mainScreen] applicationFrame];
@@ -245,15 +247,15 @@ _messageLabel.hidden = YES;
     [self.view addSubview:_messageLabel];
 #endif
 
-    CGFloat topH = 50;
-    CGFloat botH = 50;
+    CGFloat topH = 44;
+    CGFloat botH = 44;
 
     _topHUD    = [[UIView alloc] initWithFrame:CGRectMake(0,0,0,0)];
-    _topBar    = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, width, topH)];
+    _topBar    = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 20, width, topH)];
     _bottomBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, height-botH, width, botH)];
     _bottomBar.tintColor = [UIColor blackColor];
 
-    _topHUD.frame = CGRectMake(0,0,width,_topBar.frame.size.height);
+    _topHUD.frame = CGRectMake(0,20,width,_topBar.frame.size.height);
 
     _topHUD.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _topBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -266,48 +268,50 @@ _messageLabel.hidden = YES;
     // top hud
 
     _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _doneButton.frame = CGRectMake(0, 1, 50, topH);
+    _doneButton.frame = CGRectMake(0, 1, 100, topH);
     _doneButton.backgroundColor = [UIColor clearColor];
 //    _doneButton.backgroundColor = [UIColor redColor];
     [_doneButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_doneButton setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
-    _doneButton.titleLabel.font = [UIFont systemFontOfSize:18];
+    _doneButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    [_doneButton sizeToFit];
+    _doneButton.frame = CGRectMake(0, 1, _doneButton.frame.size.width + 10.0f, topH);
     _doneButton.showsTouchWhenHighlighted = YES;
     [_doneButton addTarget:self action:@selector(doneDidTouch:)
           forControlEvents:UIControlEventTouchUpInside];
 //    [_doneButton setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
 
-    _progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(46, 1, 50, topH)];
+    _progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(_doneButton.frame.origin.x+_doneButton.frame.size.width, 0, 60, topH)];
     _progressLabel.backgroundColor = [UIColor clearColor];
     _progressLabel.opaque = NO;
     _progressLabel.adjustsFontSizeToFitWidth = NO;
-    _progressLabel.textAlignment = NSTextAlignmentRight;
+    _progressLabel.textAlignment = NSTextAlignmentCenter;
     _progressLabel.textColor = [UIColor blackColor];
     _progressLabel.text = @"";
     _progressLabel.font = [UIFont systemFontOfSize:12];
     
-    _progressSlider = [[UISlider alloc] initWithFrame:CGRectMake(100, 2, width-197, topH)];
-    _progressSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    _progressSlider.continuous = NO;
-    _progressSlider.value = 0;
-//    [_progressSlider setThumbImage:[UIImage imageNamed:@"kxmovie.bundle/sliderthumb"]
-//                          forState:UIControlStateNormal];
-
-    _leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(width-92, 1, 60, topH)];
+    _leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(width-_doneButton.frame.origin.x-_doneButton.frame.size.width, 1, 60, topH)];
     _leftLabel.backgroundColor = [UIColor clearColor];
     _leftLabel.opaque = NO;
     _leftLabel.adjustsFontSizeToFitWidth = NO;
-    _leftLabel.textAlignment = NSTextAlignmentLeft;
+    _leftLabel.textAlignment = NSTextAlignmentCenter;
     _leftLabel.textColor = [UIColor blackColor];
     _leftLabel.text = @"";
     _leftLabel.font = [UIFont systemFontOfSize:12];
     _leftLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     
-    /*_infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
+    _progressSlider = [[UISlider alloc] initWithFrame:CGRectMake(_progressLabel.frame.origin.x+_progressLabel.frame.size.width, 0, _leftLabel.frame.origin.x-_progressLabel.frame.origin.x-_progressLabel.frame.size.width, topH)];
+    _progressSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _progressSlider.continuous = NO;
+    _progressSlider.value = 0;
+//    [_progressSlider setThumbImage:[UIImage imageNamed:@"kxmovie.bundle/sliderthumb"]
+//                          forState:UIControlStateNormal];
+    
+    _infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
     _infoButton.frame = CGRectMake(width-31, (topH-20)/2+1, 20, 20);
     _infoButton.showsTouchWhenHighlighted = YES;
     _infoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    [_infoButton addTarget:self action:@selector(infoDidTouch:) forControlEvents:UIControlEventTouchUpInside];*/
+    [_infoButton addTarget:self action:@selector(infoDidTouch:) forControlEvents:UIControlEventTouchUpInside];
     
     [_topHUD addSubview:_doneButton];
     [_topHUD addSubview:_progressLabel];
@@ -357,7 +361,7 @@ _messageLabel.hidden = YES;
         _leftLabel.hidden = YES;
         //_infoButton.hidden = YES;
     }
-}
+}*/
 
 - (void)didReceiveMemoryWarning
 {
@@ -398,21 +402,45 @@ _messageLabel.hidden = YES;
     }
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    _hiddenHUD = YES;
+    _topHUD.alpha = 0;
+    _topBar.alpha = 0;
+    _bottomBar.alpha = 0;
+    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self
+                      selector:@selector(applicationDidBecomeActive:)
+                          name:UIApplicationDidBecomeActiveNotification
+                        object:nil];
+    [defaultCenter addObserver:self
+                      selector:@selector(applicationDidEnterBackground:)
+                          name:UIApplicationDidEnterBackgroundNotification
+                        object:nil];
+    
+    [_activityIndicatorView startAnimating];
+}
+
+/*- (void) viewDidAppear:(BOOL)animated
 {
     // LoggerStream(1, @"viewDidAppear");
     
     [super viewDidAppear:animated];
-        
+    
     if (self.presentingViewController)
         [self fullscreenMode:YES];
     
     if (_infoMode)
         [self showInfoView:NO animated:NO];
     
-    _savedIdleTimer = [[UIApplication sharedApplication] isIdleTimerDisabled];
+    //_savedIdleTimer = [[UIApplication sharedApplication] isIdleTimerDisabled];
     
-    [self showHUD: YES];
+    //[self showHUD: YES];
     
     if (_decoder) {
         
@@ -428,9 +456,9 @@ _messageLabel.hidden = YES;
                                              selector:@selector(applicationWillResignActive:)
                                                  name:UIApplicationWillResignActiveNotification
                                                object:[UIApplication sharedApplication]];
-}
+}*/
 
-- (void) viewWillDisappear:(BOOL)animated
+/*- (void) viewWillDisappear:(BOOL)animated
 {    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
@@ -459,24 +487,60 @@ _messageLabel.hidden = YES;
     _interrupted = YES;
     
     LoggerStream(1, @"viewWillDisappear %@", self);
-}
+}*/
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+/*- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
+}*/
 
-- (void) applicationWillResignActive: (NSNotification *)notification
+/*- (void) applicationWillResignActive: (NSNotification *)notification
 {
     [self showHUD:YES];
     [self pause];
     
     LoggerStream(1, @"applicationWillResignActive");
+}*/
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    if (_decoder) {
+        
+        [self restorePlay];
+        
+    } else {
+        
+        [_activityIndicatorView startAnimating];
+    }
+    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+}
+
+-(void) applicationDidEnterBackground:(NSNotification *)notification
+{
+    [_activityIndicatorView stopAnimating];
+    
+    if (_decoder) {
+        
+        [self pause];
+        
+        if (_moviePosition == 0 || _decoder.isEOF)
+            [gHistory removeObjectForKey:_decoder.path];
+        else if (!_decoder.isNetwork)
+            [gHistory setValue:[NSNumber numberWithFloat:_moviePosition]
+                        forKey:_decoder.path];
+    }
+    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+    
+    [_activityIndicatorView stopAnimating];
+    _buffered = NO;
+    //_interrupted = YES;
 }
 
 #pragma mark - gesture recognizer
 
-- (void) handleTap: (UITapGestureRecognizer *) sender
+- (IBAction) handleTap: (UITapGestureRecognizer *) sender
 {
     if (sender.state == UIGestureRecognizerStateEnded) {
         
@@ -583,10 +647,11 @@ _messageLabel.hidden = YES;
 
 #pragma mark - actions
 
-- (void) doneDidTouch: (id) sender
+- (IBAction) doneDidTouch: (id) sender
 {
+    [self pause];
     if (self.presentingViewController || !self.navigationController)
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     else
         [self.navigationController popViewControllerAnimated:YES];
 }
@@ -596,7 +661,7 @@ _messageLabel.hidden = YES;
     [self showInfoView: !_infoMode animated:YES];
 }
 
-- (void) playDidTouch: (id) sender
+- (IBAction) playDidTouch: (id) sender
 {
     if (self.playing)
         [self pause];
@@ -604,17 +669,17 @@ _messageLabel.hidden = YES;
         [self play];
 }
 
-- (void) forwardDidTouch: (id) sender
+- (IBAction) forwardDidTouch: (id) sender
 {
     [self setMoviePosition: _moviePosition + 10];
 }
 
-- (void) rewindDidTouch: (id) sender
+- (IBAction) rewindDidTouch: (id) sender
 {
     [self setMoviePosition: _moviePosition - 10];
 }
 
-- (void) progressDidChange: (id) sender
+- (IBAction) progressDidChange: (id) sender
 {
     //NSAssert(_decoder.duration != MAXFLOAT, @"bugcheck");
     UISlider *slider = sender;
@@ -691,6 +756,8 @@ _messageLabel.hidden = YES;
                 // if (self.view.window)
                 [self restorePlay];
             }
+            
+            [self play];
         }
         
     } else {
@@ -791,7 +858,7 @@ _messageLabel.hidden = YES;
 
 - (void) setupUserInteraction
 {
-    UIView * view = [self frameView];
+    /*UIView * view = [self frameView];
     view.userInteractionEnabled = YES;
     
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -803,7 +870,7 @@ _messageLabel.hidden = YES;
     [_tapGestureRecognizer requireGestureRecognizerToFail: _doubleTapGestureRecognizer];
     
     [view addGestureRecognizer:_doubleTapGestureRecognizer];
-    [view addGestureRecognizer:_tapGestureRecognizer];
+    [view addGestureRecognizer:_tapGestureRecognizer];*/
     
 //    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 //    _panGestureRecognizer.enabled = NO;

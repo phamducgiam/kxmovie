@@ -258,7 +258,7 @@ static NSData * copyFrameData(UInt8 *src, int linesize, int width, int height)
     NSMutableData *md = [NSMutableData dataWithLength: width * height];
     Byte *dst = md.mutableBytes;
     for (NSUInteger i = 0; i < height; ++i) {
-        memcpy(dst, src, width);
+        memmove(dst, src, width);
         dst += width;
         src += linesize;
     }

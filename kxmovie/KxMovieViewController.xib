@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KxMovieViewController">
+            <connections>
+                <outlet property="_activityIndicatorView" destination="BE5-uc-q6n" id="fFy-Ld-YHb"/>
+                <outlet property="_bottomBar" destination="pWy-Iu-e25" id="zMY-45-5i6"/>
+                <outlet property="_doneButton" destination="Url-cA-qgo" id="R9u-lQ-CbA"/>
+                <outlet property="_fforwardBtn" destination="NM2-Yl-4h4" id="umG-Fx-8qP"/>
+                <outlet property="_fixedSpaceItem" destination="eDE-9I-FDy" id="dJY-Z6-NsX"/>
+                <outlet property="_leftLabel" destination="nCg-hC-us9" id="4WJ-x3-fGN"/>
+                <outlet property="_pauseBtn" destination="BI6-u4-sGo" id="Q2Z-MV-UOK"/>
+                <outlet property="_playBtn" destination="HPe-X0-ZhC" id="lk1-0k-VB9"/>
+                <outlet property="_progressLabel" destination="7Ex-pE-PZC" id="CKd-21-vqK"/>
+                <outlet property="_progressSlider" destination="564-Ve-9oI" id="TgB-hn-kXQ"/>
+                <outlet property="_rewindBtn" destination="X7F-1n-9na" id="P8g-T0-PRl"/>
+                <outlet property="_spaceItem" destination="vdb-Eb-fko" id="PN5-Di-hzt"/>
+                <outlet property="_tapGestureRecognizer" destination="3aK-RW-fri" id="FSD-l2-gIJ"/>
+                <outlet property="_topHUD" destination="Rrw-d7-wLx" id="0b2-rF-M6S"/>
+                <outlet property="view" destination="iN0-l3-epB" id="VV2-Qy-TMK"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rrw-d7-wLx" userLabel="View - top">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Url-cA-qgo" userLabel="Button - done">
+                            <rect key="frame" x="10" y="20" width="38" height="30"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                            <state key="normal" title="Done">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="doneDidTouch:" destination="-1" eventType="touchUpInside" id="BSr-g0-i3z"/>
+                            </connections>
+                        </button>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ex-pE-PZC" userLabel="Label - progress">
+                            <rect key="frame" x="58" y="20" width="47" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <slider hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="564-Ve-9oI" userLabel="Horizontal Slider - progress">
+                            <rect key="frame" x="113" y="20" width="137.5" height="31"/>
+                            <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="maximumTrackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="thumbTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="progressDidChange:" destination="-1" eventType="valueChanged" id="XZF-0V-hjg"/>
+                            </connections>
+                        </slider>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" text="-00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nCg-hC-us9" userLabel="Label - total">
+                            <rect key="frame" x="258.5" y="20" width="51.5" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="9zo-XY-OJ1"/>
+                        <constraint firstItem="564-Ve-9oI" firstAttribute="right" secondItem="nCg-hC-us9" secondAttribute="left" constant="-10" id="KFW-Qi-kUx"/>
+                        <constraint firstItem="7Ex-pE-PZC" firstAttribute="top" secondItem="Rrw-d7-wLx" secondAttribute="top" constant="20" id="Kv1-g6-rkC"/>
+                        <constraint firstItem="7Ex-pE-PZC" firstAttribute="centerY" secondItem="564-Ve-9oI" secondAttribute="centerY" id="LXs-B3-pxI"/>
+                        <constraint firstItem="Url-cA-qgo" firstAttribute="bottom" secondItem="Rrw-d7-wLx" secondAttribute="bottom" id="SSq-Bo-h08"/>
+                        <constraint firstItem="7Ex-pE-PZC" firstAttribute="bottom" secondItem="Rrw-d7-wLx" secondAttribute="bottom" id="Sbx-4d-G8M"/>
+                        <constraint firstItem="Url-cA-qgo" firstAttribute="left" secondItem="Rrw-d7-wLx" secondAttribute="left" constant="10" id="a9s-jT-1nB"/>
+                        <constraint firstItem="nCg-hC-us9" firstAttribute="top" secondItem="Rrw-d7-wLx" secondAttribute="top" constant="20" id="bCq-Eb-7ya"/>
+                        <constraint firstItem="nCg-hC-us9" firstAttribute="bottom" secondItem="Rrw-d7-wLx" secondAttribute="bottom" id="by6-cz-ElF"/>
+                        <constraint firstItem="564-Ve-9oI" firstAttribute="left" secondItem="7Ex-pE-PZC" secondAttribute="right" constant="10" id="khS-Ah-2Ex"/>
+                        <constraint firstItem="Url-cA-qgo" firstAttribute="top" secondItem="Rrw-d7-wLx" secondAttribute="top" constant="20" id="pvX-sO-RzY"/>
+                        <constraint firstItem="nCg-hC-us9" firstAttribute="right" secondItem="Rrw-d7-wLx" secondAttribute="right" constant="-10" id="tpI-4R-xt9"/>
+                        <constraint firstItem="7Ex-pE-PZC" firstAttribute="left" secondItem="Url-cA-qgo" secondAttribute="right" constant="10" id="tuX-Qa-PZh"/>
+                    </constraints>
+                </view>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pWy-Iu-e25" userLabel="Toolbar - bottom">
+                    <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                    <items/>
+                    <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </toolbar>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="BE5-uc-q6n">
+                    <rect key="frame" x="141" y="265" width="37" height="37"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Rrw-d7-wLx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="52d-6C-sig"/>
+                <constraint firstItem="pWy-Iu-e25" firstAttribute="right" secondItem="iN0-l3-epB" secondAttribute="right" id="GEf-uN-q4P"/>
+                <constraint firstAttribute="centerX" secondItem="BE5-uc-q6n" secondAttribute="centerX" id="HNR-le-aI3"/>
+                <constraint firstItem="Rrw-d7-wLx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="HZP-iV-Jmo"/>
+                <constraint firstItem="pWy-Iu-e25" firstAttribute="left" secondItem="iN0-l3-epB" secondAttribute="left" id="JCe-G8-dm1"/>
+                <constraint firstItem="pWy-Iu-e25" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="Oze-Yl-dZ4"/>
+                <constraint firstAttribute="trailing" secondItem="Rrw-d7-wLx" secondAttribute="trailing" id="dhQ-ad-Qbr"/>
+                <constraint firstAttribute="centerY" secondItem="BE5-uc-q6n" secondAttribute="centerY" id="mxi-Ua-dit"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="3aK-RW-fri" appends="YES" id="GEn-3Z-dgm"/>
+            </connections>
+        </view>
+        <tapGestureRecognizer cancelsTouchesInView="NO" id="3aK-RW-fri">
+            <connections>
+                <action selector="handleTap:" destination="-1" id="dsc-8h-SRa"/>
+            </connections>
+        </tapGestureRecognizer>
+        <barButtonItem style="plain" systemItem="play" id="HPe-X0-ZhC" userLabel="Item - play">
+            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <connections>
+                <action selector="playDidTouch:" destination="-1" id="HkW-mS-Twb"/>
+            </connections>
+        </barButtonItem>
+        <barButtonItem style="plain" systemItem="pause" id="BI6-u4-sGo" userLabel="Item - pause">
+            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <connections>
+                <action selector="playDidTouch:" destination="-1" id="8rU-ln-0cP"/>
+            </connections>
+        </barButtonItem>
+        <barButtonItem style="plain" systemItem="rewind" id="X7F-1n-9na" userLabel="Item - rewind">
+            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <connections>
+                <action selector="rewindDidTouch:" destination="-1" id="IUU-Nf-Rmv"/>
+            </connections>
+        </barButtonItem>
+        <barButtonItem style="plain" systemItem="fastForward" id="NM2-Yl-4h4" userLabel="Item - fast forward">
+            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <connections>
+                <action selector="forwardDidTouch:" destination="-1" id="7eo-SK-4Px"/>
+            </connections>
+        </barButtonItem>
+        <barButtonItem width="30" style="plain" systemItem="fixedSpace" id="eDE-9I-FDy">
+            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+        </barButtonItem>
+        <barButtonItem style="plain" systemItem="flexibleSpace" id="vdb-Eb-fko">
+            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+        </barButtonItem>
+    </objects>
+</document>
